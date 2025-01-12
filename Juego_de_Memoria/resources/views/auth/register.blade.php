@@ -14,11 +14,11 @@
 
                         <!-- Nombre de Usuario -->
                         <div class="mb-3">
-                            <label for="user" class="form-label text-dark">Nombre de Usuario</label>
-                            <input type="text" id="user" name="user" value="{{ old('user') }}" required autofocus autocomplete="user" 
-                                   class="form-control @error('user') is-invalid @enderror">
-                            @error('user')
-                                <div class="invalid-feedback">
+                            <label for="username" class="form-label text-dark">Nombre de Usuario</label>
+                            <input type="text" id="username" name="username" value="{{ old('username') }}" required autofocus autocomplete="username" 
+                                   class="form-control @error('username') is-invalid @enderror">
+                            @error('username')
+                                <div class="invalid-feedback" role="alert">
                                     {{ $message }}
                                 </div>
                             @enderror
@@ -30,7 +30,7 @@
                             <input type="email" id="email" name="email" value="{{ old('email') }}" required autocomplete="username" 
                                    class="form-control @error('email') is-invalid @enderror">
                             @error('email')
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback" role="alert">
                                     {{ $message }}
                                 </div>
                             @enderror
@@ -39,10 +39,10 @@
                         <!-- Contraseña -->
                         <div class="mb-3">
                             <label for="password" class="form-label text-dark">Contraseña</label>
-                            <input type="password" id="password" name="password" required autocomplete="new-password" 
+                            <input type="password" id="password" name="password" required 
                                    class="form-control @error('password') is-invalid @enderror">
                             @error('password')
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback" role="alert">
                                     {{ $message }}
                                 </div>
                             @enderror
@@ -51,10 +51,10 @@
                         <!-- Confirmar Contraseña -->
                         <div class="mb-3">
                             <label for="password_confirmation" class="form-label text-dark">Confirmar Contraseña</label>
-                            <input type="password" id="password_confirmation" name="password_confirmation" required autocomplete="new-password" 
+                            <input type="password" id="password_confirmation" name="password_confirmation" required 
                                    class="form-control @error('password_confirmation') is-invalid @enderror">
                             @error('password_confirmation')
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback" role="alert">
                                     {{ $message }}
                                 </div>
                             @enderror
@@ -62,11 +62,11 @@
 
                         <!-- Fecha de Nacimiento -->
                         <div class="mb-3">
-                            <label for="fecha_nacimiento" class="form-label text-dark">Fecha de Nacimiento</label>
-                            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ old('fecha_nacimiento') }}" required 
-                                   class="form-control @error('fecha_nacimiento') is-invalid @enderror">
-                            @error('fecha_nacimiento')
-                                <div class="invalid-feedback">
+                            <label for="date_of_birth" class="form-label text-dark">Fecha de Nacimiento</label>
+                            <input type="date" id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth') }}" required 
+                                   class="form-control @error('date_of_birth') is-invalid @enderror">
+                            @error('date_of_birth')
+                                <div class="invalid-feedback" role="alert">
                                     {{ $message }}
                                 </div>
                             @enderror
@@ -85,4 +85,5 @@
         </div>
     </div>
 </div>
+<script src="{{ asset('assets/libs/jquery/jquery.min.js')}}"></script>
 @endsection

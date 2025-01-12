@@ -1,0 +1,15 @@
+.is-invalid {
+  border: 1px solid red; /* Borde del contenedor en rojo */
+}
+
+/* Aplicar solo si quieres el borde rojo en el input también */
+.is-invalid .form-control {
+  border-color: red; /* Borde del input en rojo */
+}
+
+/* Asegúrate de que el mensaje de error esté bien alineado */
+.invalid-feedback {
+  display: block; /* Asegúrate de que se muestre como bloque */
+  color: red; /* Color del mensaje de error */
+  margin-top: 0.25rem; /* Espacio entre el input y el mensaje de error */
+}

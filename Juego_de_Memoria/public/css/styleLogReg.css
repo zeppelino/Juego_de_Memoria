@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap");
+
+/* @font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("../../assets/fonts/inter-light.woff2?v=3.13") format("woff2"), url("../../assets/fonts/inter-light.woff?v=3.13") format("woff");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../../assets/fonts/inter-regular.woff2?v=3.13") format("woff2"), url("../../assets/fonts/inter-regular.woff?v=3.13") format("woff");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../../assets/fonts/inter-medium.woff2?v=3.13") format("woff2"), url("../../assets/fonts/inter-medium.woff?v=3.13") format("woff");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../../assets/fonts/inter-bold.woff2?v=3.13") format("woff2"), url("../../assets/fonts/iter-bold.woff?v=3.13") format("woff");
+}
+ */
+
+/* .auth-body-bg {
+  background-image: linear-gradient(
+    to top,
+    #1e3c72 0%,
+    #1e3c72 1%,
+    #2a5298 100%
+  );
+
+} */
+
+.auth-body-bg {
+  background-image: url(../../assets/images/bg06.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.bg-overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  opacity: 0.8;
+  background-color: #000;
+}
+.auth-body-bg .bg-overlay {
+  background: rgba(51, 51, 51, 0.97);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0px;
+  top: 0px;
+}
+
+.wrapper-page {
+  margin: 7.5% auto;
+  max-width: 460px;
+  position: relative;
+}
+.wrapper-page .auth-logo {
+  font-size: 28px;
+  line-height: 70px;
+}
+.wrapper-page .auth-logo.logo-light {
+  display: none;
+}
+.wrapper-page .auth-logo.logo-dark {
+  display: block;
+}
