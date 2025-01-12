@@ -1,0 +1,23 @@
+
+body{
+  display: flex;
+}
+
+.content {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.btn-custom {
+  background-color: #0069d9;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.btn-custom:hover {
+  background-color: #0056b3;
+}
