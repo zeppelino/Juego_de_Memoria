@@ -14,7 +14,14 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">Juego de Memoria</a>
+            <a href="{{ route('welcome') }}" class="text-decoration-none">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 100px; margin-right: 20px;"> 
+            </a>
+
+            {{-- <p>
+                JUEGO DE MEMORIA
+            </p> --}}
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>

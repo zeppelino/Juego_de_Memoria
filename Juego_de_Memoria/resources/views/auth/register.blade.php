@@ -5,8 +5,11 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow" style="background-color: #f3f4f6; border: none;">
-                <div class="card-header text-center" style="background-color: #6366F1; color: white;">
-                    <h4>Registro de Usuario</h4>
+                <div class="card-header d-flex align-items-center" style="background-color: black; color: white;">
+                    <a href="{{ route('welcome') }}" class="text-decoration-none">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 100px; margin-right: 20px;"> 
+                    </a>
+                    <h4 class="mb-0 ms-auto">Registro de Usuario</h4>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
