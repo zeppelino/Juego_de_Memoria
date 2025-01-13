@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/fondo.css') }}">
 
+
 </head>
 
 <body>
@@ -18,9 +19,7 @@
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 100px; margin-right: 20px;"> 
             </a>
 
-            {{-- <p>
-                JUEGO DE MEMORIA
-            </p> --}}
+            <h1 class="navbar-brand mb-0 text-white text-center" style="flex-grow: 1; margin-left: 270px;">EMPAREJADOS</h1> 
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>

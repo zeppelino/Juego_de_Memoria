@@ -25,8 +25,16 @@
 <body>
 
     <div class="content">
-        <h1>JUEGO DE MEMORIA</h1>
-        <p class="">¡Bienvenido al Juego de Memoria! El objetivo es encontrar las cartas emparejadas, desafiando tu memoria en el proceso. ¿Estás listo para comenzar?</p>
+        <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 200px; margin-right: 20px;"> 
+        
+        <br>
+        <br>
+        {{-- TITULO  --}}
+        <h1>EMPAREJADOS</h1>
+        
+        <br>
+        
+        <p class="">¡Bienvenido a EMPAREJADOS! un juego de memoria con el objetivo es encontrar las parejas de las cartas, desafiando tu memoria en el proceso. ¿Estás listo para comenzar?</p>
 
         <div>
             <a href="{{ route('login') }}" class="btn-custom">Iniciar Sesión</a>
