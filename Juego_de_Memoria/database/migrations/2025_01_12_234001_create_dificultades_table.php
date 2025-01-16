@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('dificultades', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');      // baja, media, alta
-            $table->string('descripcion'); // Ej: "Baja (8 cartas)"
+            $table->string('descripcion'); // "Baja (8 cartas)"
+            $table->integer('numero_de_cartas');     // 8, 16, 32
+            $table->integer('intentos');   // 24, 40, 64
             $table->timestamps();
         });
     }

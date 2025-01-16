@@ -10,6 +10,11 @@ body {
   font-family: Arial, sans-serif;
 }
 
+.navbar {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 .navbar-brand {
   font-size: 28px; /* Aumentar el tamaño de la fuente */
   font-weight: bold; /* Negrita */
@@ -21,4 +26,28 @@ body {
 
 .navbar-brand:hover {
   color: #FFEA00; /* Color más claro al pasar el ratón */
+}
+
+/* Ajuste del contenedor para reducir el ancho */
+.navbar .container {
+  max-width: 1100px; /* Reduce el ancho del navbar */
+}
+
+/* Ajuste del logo */
+.navbar img {
+  width: 40px;  /* Disminuye el tamaño del logo */
+  height: auto; /* Mantiene la proporción */
+  margin-right: 10px; /* Reduce el espacio derecho */
+}
+
+/* Ajuste del título */
+.navbar-brand {
+  font-size: 24px;
+  margin-left: 100px; /* Reduce la separación del título */
+}
+
+/* Ajuste de los márgenes del contenido */
+.container.mt-5 {
+  margin-top: 20px !important;  /* Reduce el margen superior */
+  margin-bottom: 10px !important; /* Reduce el margen inferior */
 }

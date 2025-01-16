@@ -7,7 +7,11 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Estilos propios -->
     <link rel="stylesheet" href="{{ asset('css/fondo.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/tablero.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+
 
 
 </head>
@@ -15,7 +19,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a href="{{ route('welcome') }}" class="text-decoration-none">
+            <a href="{{ route('dashboard') }}" class="text-decoration-none">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 100px; margin-right: 20px;"> 
             </a>
 

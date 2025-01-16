@@ -12,6 +12,6 @@ class Dificultad extends Model
         protected $table = 'dificultades';
 
         use HasFactory;
-        protected $fillable = ['nombre', 'descripcion'];
+        protected $fillable = ['nombre', 'descripcion, numero_de_cartas, intentos'];
     
 }

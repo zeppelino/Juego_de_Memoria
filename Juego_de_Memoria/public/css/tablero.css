@@ -1,0 +1,99 @@
+/* Estilos generales para el tablero */
+#tablero {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr); 
+  gap: 10px;
+  justify-items: center;
+  margin-top: 20px;
+  /* max-height: 60vw;   */
+}
+/* #tablero {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  overflow-y: auto;
+} */
+
+
+/* Estilos para las cartas */ 
+.carta {
+  width: 100px;
+ /*  width: calc(100% / 8 - 10px); */
+  max-width: 100px;
+  height: 140px;
+  background-color: #f1f1f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 30px;
+  color: #333;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+/* Efecto de voltear la carta */
+.carta:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo cuando una carta está volteada */
+.carta.acertada {
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+}
+
+/* Estilos para la tabla de ranking */
+#rankingTable {
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Estilo de la fila y celdas de la tabla */
+#rankingTable th, #rankingTable td {
+  text-align: center;
+  padding: 8px;
+}
+
+/* Botón de rendirse */
+#btnRendirse {
+  width: 100%;
+  font-size: 16px;
+}
+
+/* Estilos para la tarjeta que contiene el tablero y la información */
+.card {
+  border-radius: 10px;
+}
+
+.card-header {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* Aseguramos que las cartas no se desborden en pantallas pequeñas */
+@media (max-width: 576px) {
+  #tablero {
+      grid-template-columns: repeat(2, 1fr); /* En pantallas pequeñas se mostrarán 2 columnas */
+  }
+  .carta {
+    width: calc(100% / 4 - 10px);
+  }
+}
+
+/*   @media (max-width: 768px) {
+    .carta {
+      width: calc(100% / 4 - 10px);
+    }
+} */
+
+
+

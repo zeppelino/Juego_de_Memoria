@@ -23,4 +23,13 @@ class Partida extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /* funcion para buscar las mejores partidas se utiliza en el ranking  */
+    public static function mejoresPartidas($userId)
+    {
+        return self::where('user_id', $userId)
+            ->orderBy('tiempo', 'asc') 
+            ->take(5)
+            ->get(); 
+    }
 }

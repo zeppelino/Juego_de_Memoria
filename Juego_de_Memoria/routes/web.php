@@ -16,7 +16,9 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/game', [GameController::class, 'index'])->name('game');
-    Route::get('/game/start', [GameController::class, 'start'])->name('game.start');
+    Route::get('/ranking', [GameController::class, 'obtenerRanking']);
+    Route::post('/game/iniciarPartida', [GameController::class, 'iniciarPartida'])->name('board');
+    Route::get('/guardarPartida', [GameController::class, 'guardarPartida']);
 });
 
 Route::middleware('auth')->group(function () {
