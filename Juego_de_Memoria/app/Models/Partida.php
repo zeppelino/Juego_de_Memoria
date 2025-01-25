@@ -12,11 +12,15 @@ class Partida extends Model
     protected $fillable = [
         'user_id',
         'resultado',
+        'nro_partida',
         'dificultad',
         'tipo_cartas',
-        'tiempo',
+        'tiempo_total',
+        'tiempo_restante',
         'intentos',
         'aciertos',
+        'estado_cartas',
+        'estadoPartida',
     ];
 
     public function user()
@@ -28,7 +32,7 @@ class Partida extends Model
     public static function mejoresPartidas($userId)
     {
         return self::where('user_id', $userId)
-            ->orderBy('tiempo', 'asc') 
+            ->orderBy('tiempo_restante', 'asc') 
             ->take(5)
             ->get(); 
     }

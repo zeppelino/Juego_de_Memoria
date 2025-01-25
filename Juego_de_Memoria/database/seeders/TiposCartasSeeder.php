@@ -16,7 +16,7 @@ class TiposCartasSeeder extends Seeder
         DB::table('tipos_cartas')->insert([
             ['nombre' => 'numeros', 'descripcion' => 'Números'],
             ['nombre' => 'animales', 'descripcion' => 'Animales'],
-            ['nombre' => 'imagenes', 'descripcion' => 'Imágenes'],
+            ['nombre' => 'aviones', 'descripcion' => 'Aviones'],
         ]);
         
     }

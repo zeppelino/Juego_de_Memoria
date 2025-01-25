@@ -87,18 +87,60 @@ function actualizarMarcadores() {
 }
 
 function verificarFinDelJuego() {
+
+    /* Pensar en dejar los valores de los mensajes para que haya un solo sweetalert*/
+
+
     const totalParejas = document.querySelectorAll('.carta').length / 2;
     const intentosObtenidos = document.getElementById('intentosObtenidosId')?.value;
-    
+    const tiempoRestante = document.getElementById('tiempoRestanteId')?.value;
+    const intentosRestantes = intentosObtenidos - intentos;
+
+
+    let porcentajeAciertos = (aciertos / totalParejas) * 100;
+
+
     // GANAR - Verifico si los aciertos son igual a la cantidad de parejas
     if (aciertos === totalParejas) {
-        setTimeout(() => alert('🎉 ¡Has ganado la partida!'), 500);
+        setTimeout(() => {
+            Swal.fire({
+                title: '🎉 ¡¡EXCELENTE MEMORIA!!',
+                text: 'Has encontrado todas las parejas. ¡Felicitaciones!',
+                icon: 'success',
+                confirmButtonText: 'Continuar'
+            });
+        }, 500);
     }
 
     // PERDER por intentos - Verifico si los intentos obtenidos (los que me da cada dificultad) son igual a la cantidad de intentos
-    if (intentos === intentosObtenidos) {
-        setTimeout(() => alert('🙁 ¡Has perdido la partida!'), 500);
-    }
+
+        if (intentosRestantes == 0|| tiempoRestante <= 0) {
+            console.log(porcentajeAciertos);
+            setTimeout(() => {
+                if (porcentajeAciertos >= 80 && porcentajeAciertos < 100) {
+                    Swal.fire({
+                        title: '💪 ¡¡MUY BUENA MEMORIA!!',
+                        text: 'Estuviste muy cerca de ganar. ¡Sigue practicando!',
+                        icon: 'info',
+                        confirmButtonText: 'Intentar de nuevo'
+                    });
+                } else if (porcentajeAciertos >= 60 && porcentajeAciertos < 80) {
+                    Swal.fire({
+                        title: '👍 ¡¡BUENA MEMORIA!!',
+                        text: 'Puedes mejorar. ¡Inténtalo de nuevo!',
+                        icon: 'warning',
+                        confirmButtonText: 'Volver a jugar'
+                    });
+                } else {
+                    Swal.fire({
+                        title: '🧠 ¡¡MALA MEMORIA!!',
+                        text: 'Debes practicar más. ¡No te rindas!',
+                        icon: 'error',
+                        confirmButtonText: 'Reintentar'
+                    });
+                }
+            }, 500);
+        }
 
 }
 

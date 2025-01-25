@@ -9,16 +9,19 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/dashboard', function () {
+/* Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
+ */
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/game', [GameController::class, 'index'])->name('game');
     Route::get('/ranking', [GameController::class, 'obtenerRanking']);
     Route::post('/game/iniciarPartida', [GameController::class, 'iniciarPartida'])->name('board');
-    Route::get('/guardarPartida', [GameController::class, 'guardarPartida']);
+    Route::post('/guardarPartida', [GameController::class, 'guardarPartida'])->name('guardarPartida');
+    Route::post('/interrumpir', [GameController::class, 'interrumpir'])->name('interrumpir');
+
+
 });
 
 Route::middleware('auth')->group(function () {
