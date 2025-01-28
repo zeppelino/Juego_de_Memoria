@@ -9,21 +9,45 @@ let intentos = 0;
 let tiempoRestante;
 let intervaloTiempo;
 
+// Escuchadores para los botones rendirse e interrumpir
+document.getElementById("btnRendirse").addEventListener("click", function() {
+    guardarPartida("abandonada", "finalizada");
+});
+
+document.getElementById("btnInterrumpir").addEventListener("click", function() {
+    guardarPartida("en curso", "activa");
+});
+
+
 // Event Listener para iniciar el tablero
 document.addEventListener("DOMContentLoaded", () => {
-    const dificultad = document.getElementById("dificultad")?.value;
-    const nroCartas = document.getElementById("nroCartasId")?.value;
-    const tipoCartas = document.getElementById("tipo_cartas")?.value;
-    const tiempoSeleccionado = document.getElementById(
-        "tiempoSeleccionadoId"
-    ).value;
 
-    generarTablero(dificultad, tipoCartas, nroCartas);
-    iniciarTemporizador(tiempoSeleccionado);
+    let tablero = document.getElementById('tableroContinuar');
+
+    const esPartidaGuardada = tablero?  tablero.dataset.esPartidaGuardada === "true" : "false";
+    
+
+    if (esPartidaGuardada == true) {
+        cargarPartida();
+    } else {
+
+        const dificultad = document.getElementById("dificultad")?.value;
+        const nroCartas = document.getElementById("nroCartasId")?.value;
+        const tipoCartas = document.getElementById("tipo_cartas")?.value;
+        const tiempoSeleccionado = document.getElementById(
+            "tiempoSeleccionadoId"
+        ).value;
+
+        generarTablero(dificultad, tipoCartas, nroCartas);
+        iniciarTemporizador(tiempoSeleccionado);
+
+    }
+
 });
 
 ///////////////  FUNCIONES PARA EL TABLERO  ///////////////
 function generarTablero(dificultad, tipoCartas, nroCartas) {
+
     const tipos = Array.from({ length: 16 }, (_, i) => i + 1);
 
     if (
@@ -34,12 +58,11 @@ function generarTablero(dificultad, tipoCartas, nroCartas) {
         return;
     }
 
-    // DESCOMENTAR
-    /* let cartas = tipos[tipoCartas].slice(0, nroCartas / 2); */
+    // genero el ordern de las cartas
     let cartas = tipos.slice(0, nroCartas / 2);
     cartas = cartas.concat(cartas).sort(() => Math.random() - 0.5);
 
-    console.log(cartas);
+    //console.log(cartas);
 
     const tablero = document.getElementById("tablero");
     tablero.innerHTML = "";
@@ -53,13 +76,7 @@ function generarTablero(dificultad, tipoCartas, nroCartas) {
         cartaDiv.className = "carta";
         cartaDiv.dataset.valor = carta;
 
-        // creo el contendor  para la parte de atras de la carta
-        /* const placeholder = document.createElement("span");
-        placeholder.className = "placeholder";
-        cartaDiv.appendChild(placeholder); */
-        /* placeholder.innerText = "?"; */
-
-        // Verificar si es una imagen o un número
+    
         // Construcción dinámica de la ruta de la imagen según el tipo de carta
         const img = document.createElement("img");
         const baseUrl2 = "../images";
@@ -244,7 +261,7 @@ function finalizarPartida(mensaje, totalParejas) {
         title: "Partida finalizada",
         text: mensaje + "\n" + mensaje2,
         icon: icono,
-        confirmButtonText: "Ir a Inicio",
+        confirmButtonText: "Continuar",
     }).then(() => guardarPartida(resultado, estado));
 }
 
@@ -253,8 +270,35 @@ function finalizarPartida(mensaje, totalParejas) {
 // con AXIOS
 function guardarPartida(resultado, estado) {
 
-    const tiempoTotalFormateado = formatearTiempo(document.getElementById("tiempoSeleccionadoId").value);
-    const tiempoRestanteFormateado = formatearTiempo(tiempoRestante); // Asegúrate de que tiempoRestante esté en segundos
+
+    let tiempoTotalFormateado;
+    let tiempoRestanteFormateado;
+
+    const tiempoSeleccionado = document.getElementById("tiempoSeleccionadoId").value;
+
+        if (tiempoSeleccionado === "ilimitado") {
+            tiempoTotalFormateado = formatearTiempo(0);
+            tiempoRestanteFormateado = formatearTiempo(0);
+        } else if (/^\d{2}:\d{2}:\d{2}$/.test(tiempoSeleccionado)) {
+            // Si el tiempo viene en formato 00:00:00 lo cambio 
+            const tiempoEnSegundos = tiempoAsegundos(tiempoSeleccionado);
+        
+            tiempoTotalFormateado = formatearTiempo(tiempoEnSegundos);
+            tiempoRestanteFormateado = formatearTiempo(tiempoRestante);
+        } else {
+            tiempoTotalFormateado = formatearTiempo(parseInt(tiempoSeleccionado * 60));
+            tiempoRestanteFormateado = formatearTiempo(tiempoRestante);
+        }
+    
+
+        
+    /* if(document.getElementById("tiempoSeleccionadoId").value === "ilimitado"){
+        tiempoTotalFormateado = formatearTiempo(0);
+        tiempoRestanteFormateado = formatearTiempo(0);
+    }else{
+        tiempoTotalFormateado = formatearTiempo(parseInt(document.getElementById("tiempoSeleccionadoId").value *60));
+        tiempoRestanteFormateado = formatearTiempo(tiempoRestante); 
+    } */
 
     const datosPartida = {
         resultado: resultado,
@@ -269,26 +313,10 @@ function guardarPartida(resultado, estado) {
         estado_cartas: obtenerEstadoCartas(),
     };
 
-/* 
-    const datosPartida = {
-        resultado: resultado,
-        nro_partida: document.getElementById("nroPartida").innerText,
-        dificultad: document.getElementById("dificultad").value,
-        tipo_cartas: document.getElementById("tipo_cartas").value,
-        tiempo_total: document.getElementById("tiempoSeleccionadoId").value,
-        intentos: intentos,
-        aciertos: aciertos,
-        tiempo_restante: tiempoRestante,
-        estado: estado,
-        estado_cartas: obtenerEstadoCartas(),
-    }; */
-
-    /* let ruta = document.getElementById('rutaId').value; */
-
     // ver si se envia bien el json , recordar ver el controlador si recibe bien los datos
     console.log(JSON.stringify(datosPartida));
-    /*console.log(ruta); */
-
+    
+    /* let ruta = document.getElementById('rutaId').value; */
     /* axios.post(ruta, datosPartida, { */
     axios
         .post("../guardarPartida", datosPartida, {
@@ -305,14 +333,6 @@ function guardarPartida(resultado, estado) {
                 "success"
             ).then(() => (window.location.href = "../dashboard"));
         })
-        /* .catch(error => {
-                if (error.response && error.response.data) {
-                    console.error('Detalles del error:', error.response.data);
-                    Swal.fire('Error', JSON.stringify(error.response.data.errors), 'error');
-                } else {
-                    Swal.fire('Error', 'Hubo un problema al conectar con el servidor.', 'error');
-                }
-            }); */
         .catch((error) => {
             console.error("Error al guardar la partida:", error);
             Swal.fire(
@@ -323,13 +343,23 @@ function guardarPartida(resultado, estado) {
         });
 }
 
+/* FUNCIONES PARA FORMATEAR TIEMPOS */
+/* De segundos a 00:00:00 */
 function formatearTiempo(segundos) {
     const horas = Math.floor(segundos / 3600);
     const minutos = Math.floor((segundos % 3600) / 60);
     const secs = segundos % 60;
 
-    // Asegurarse de que los valores sean siempre de dos dígitos
+    // devuelve hor:min:seg
     return `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    
+}
+
+/* De 00:00:00 a segundos */
+function tiempoAsegundos(tiempo) {
+    const [horas, minutos, segundos] = tiempo.split(':').map(Number);
+    const totalSegundos = (horas * 3600) + (minutos * 60) + segundos;
+    return totalSegundos;
 }
 
 // Obtener el estado de las cartas del tablero
@@ -341,13 +371,111 @@ function obtenerEstadoCartas() {
         estadoCartas.push({
             id: index + 1,
             estado: carta.classList.contains("acertada")
-                ? "descubierta"
+                ? "acertada"
                 : "oculta",
+            carta: carta.dataset.valor,
         });
     });
 
     return estadoCartas;
 }
+
+
+/* ////////////////////  FUNCIONES PARA RESTAURAR LA PARTIDA   //////////////////////////// */
+function cargarPartida() {
+    const tablero1 = document.getElementById("tableroContinuar"); 
+
+    let cartas = [];
+
+    const dificultad = tablero1.dataset.dificultad; // cambiar por los documentgetElementById
+    const tipoCartas = tablero1.dataset.tipoCartas;
+    const tiempoRestante = tiempoAsegundos(tablero1.dataset.tiempoRestante); // CONVERTIRLO EN SEGUNDOS
+    const tiempoTotal = tiempoAsegundos(tablero1.dataset.tiempoTotal);
+    cartas = JSON.parse(tablero1.dataset.cartas);
+    const intentosRestantes = parseInt(tablero1.dataset.intentos);
+    const aciertosOld = parseInt(tablero1.dataset.aciertos);
+
+
+    const tablero = document.getElementById('tablero');
+
+    // Limpiar el tablero
+    tablero.innerHTML = "";
+
+    console.log(cartas);
+    console.log(tablero1);
+
+    const baseUrl2 = "../images";
+
+    cartas.forEach((carta, index) => {
+        const cartaDiv = document.createElement("div");
+        cartaDiv.id = "cartaId" + (index +1 );
+        cartaDiv.className = "carta";
+        cartaDiv.dataset.valor = carta.carta;
+
+        const img = document.createElement("img");
+       
+        img.src = baseUrl2 + "/" + tipoCartas + "/" + carta.carta + ".jpg"; // ver por que no toma la imagen
+        img.alt = "Carta de juego";
+        img.classList.add("imagen-carta");
+
+        if(carta.estado == 'oculta'){
+            img.style.display = "none";
+        }else{
+            cartaDiv.className = 'carta acertada';
+            img.style.display = 'block';
+        }
+        cartaDiv.appendChild(img);
+        cartaDiv.addEventListener("click", () => voltearCarta(cartaDiv, tipoCartas));
+
+        tablero.appendChild(cartaDiv);
+
+    });
+
+    // Restaurar los marcadores
+    document.getElementById("tiempoTranscurrido").textContent = tiempoRestante;
+    document.getElementById("intentosRestantes").textContent = intentosRestantes; // intentos obtenidos
+    intentos = intentosRestantes;
+    document.getElementById("aciertos").textContent = aciertosOld;
+    aciertos = aciertosOld;
+
+    // Iniciar el temporizador desde el tiempo restante
+    continuarTemporizador(tablero1.dataset.tiempoRestante, tablero1.dataset.tiempoTotal);
+}
+
+
+function continuarTemporizador(tiempoBD) {
+    if (tiempoBD === "00:00:00") {
+        document.getElementById("tiempoTranscurrido").innerText =
+            "⏳ Sin límite de tiempo";
+        return;
+    }
+
+    // Convertir el tiempo desde formato h:i:s a segundos
+    const [horas, minutos, segundos] = tiempoBD.split(":").map(Number);
+    tiempoRestante = horas * 3600 + minutos * 60 + segundos;
+
+    intervaloTiempo = setInterval(() => {
+        if (tiempoRestante <= 0) {
+            clearInterval(intervaloTiempo);
+            finalizarPartida("Tiempo agotado");
+        } else {
+            actualizarVisualizadorTiempoContinuar();
+            tiempoRestante--;
+        }
+    }, 1000);
+}
+
+// Actualizar visualizador para formato h:i:s
+function actualizarVisualizadorTiempoContinuar() {
+    const horas = Math.floor(tiempoRestante / 3600);
+    const minutos = Math.floor((tiempoRestante % 3600) / 60);
+    const segundos = tiempoRestante % 60;
+    document.getElementById("tiempoTranscurrido").innerText = `⏳ ${
+        minutos < 10 ? "0" : ""
+    }${minutos}:${segundos < 10 ? "0" : ""}${segundos}`;
+}
+
+
 
 // con NATIVO
 /* function guardarPartida(resultado, estado) {

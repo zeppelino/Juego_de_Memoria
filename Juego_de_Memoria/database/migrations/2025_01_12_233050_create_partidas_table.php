@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('nro_partida');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('resultado', ['ganada', 'perdida']);
+            $table->enum('resultado', ['ganada', 'perdida','abandonada','en curso',]);
             $table->string('dificultad');
             $table->string('tipo_cartas');
             $table->time('tiempo_total'); 

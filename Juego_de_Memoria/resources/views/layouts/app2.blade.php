@@ -12,8 +12,7 @@
     <link rel="stylesheet" href="{{ asset('css/fondo.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/tablero.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
-
-
+    
 
 </head>
 

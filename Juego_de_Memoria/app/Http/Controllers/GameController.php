@@ -15,12 +15,15 @@ use function Illuminate\Log\log;
 
 class GameController extends Controller
 {
+
+
     /* Esta funcion es llamada por el dashboard al dar iniciar juego para cargar los selectores */
     public function index()
     {
         $dificultades = Dificultad::all();
         $tiposCartas = TipoCarta::all();
         $tiempos = Tiempo::all();
+
 
         return view('game', compact('dificultades', 'tiposCartas', 'tiempos'));
     }
@@ -65,20 +68,20 @@ class GameController extends Controller
 
 
      /* RANKING */
-     $partidaModel = new Partida(); // Creo instancia del modelo
-     $mejoresPartidas = $partidaModel->mejoresPartidas($usuarioId); // llamo instancia
-
+     $mejoresPartidas = $this->buscarRanking($usuarioId);
 
         return view('board', compact('dificultad', 'tipo_cartas', 'tiempo','idPartida', 'cantidadCartas', 'mejoresPartidas', 'usuarioId'));
     }
     
+    
+    
     /* FUNCION PARA GUARDAR LA PARTIDA */
-
+    
     public function guardarPartida(Request $request)
-{
+    {
 
-    $request->validate([
-        'resultado' => 'required|string',
+        $request->validate([
+            'resultado' => 'required|string',
         'nro_partida' => 'required|integer',
         'dificultad' => 'required|string',
         'tipo_cartas' => 'required|string',
@@ -89,23 +92,10 @@ class GameController extends Controller
         'estado_cartas' => 'nullable|array',
         'estado' =>'required|string'
     ]);
-
+    
     /* $estadoCartas = json_decode($request->estado_cartas, true); // usarlo cuando cargue la partida vieja*/
-
+    
     try {
-       /*  Partida::create([
-            'user_id' => Auth::id(),
-            'resultado' => $request->resultado,
-            'nro_partida' => $request->nro_partida,
-            'dificultad' => $request->dificultad,
-            'tipo_cartas' => $request->tipo_cartas,
-            'tiempo_total' => intval($request->tiempo_total),
-            'intentos' => $request->intentos,
-            'aciertos' => $request->aciertos,
-            'tiempo_restante' => $request->tiempo_restante,
-            'estado_cartas' => json_encode($request->estado_cartas),
-            'estadoPartida' => $request->estado,
-        ]); */
         Partida::create([
             'user_id' => Auth::id(),
             'resultado' => $request->resultado,
@@ -120,16 +110,75 @@ class GameController extends Controller
             'estadoPartida' => $request->estado,
         ]);
 
-       /*  $estadoCartas = json_decode($request->estado_cartas, true);
-
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        return response()->json(['error' => 'El formato de estado_cartas no es válido'], 422);
-    } */
-      
-        return response()->json(['success' => true]);
+       return response()->json(['success' => true]);
     } catch (\Exception $e) {
         return response()->json(['error' => 'Error al guardar la partida.'.$e], 500);
     }
+}
+
+public function finalizar($idPartida){
+    
+    //buscar el id de usuario
+    $usuarioId = Auth::id();
+    
+    // buscar con el id de la partida y el id del usuario
+    $partida = Partida::where('nro_partida', $idPartida)
+    ->where('user_id', $usuarioId)
+    ->first();
+    
+    if (!$partida) {
+        return redirect()->back()->withErrors(['error' => 'Partida no encontrada.']);
+    }
+    
+    // solo cambio resultado a "abandonada" y estadoPartida a "finalizada"
+    $partida->update([
+        'resultado' => 'abandonada',
+        'estadoPartida' => 'finalizada'
+    ]);
+    
+    $partida->save();
+    
+    return redirect()->route('dashboard');
+}
+
+/* FUNCION PARA CONTINUAR CON LA PARTIDA */
+
+public function continuarPartida($idPartida)
+{
+
+    $idUsuario = Auth::id();
+
+    $partida = Partida::where('nro_partida', $idPartida)
+        ->where('user_id', $idUsuario)
+        ->firstOrFail();
+    
+        $dificultad = Dificultad::where('nombre', $partida->dificultad)->first();
+        $intentosObtenidos = $dificultad->intentos;
+
+    $mejoresPartidas = $this->buscarRanking($idUsuario);
+    $cantidadCartas = $dificultad->numero_de_cartas;
+
+    return view('board', [
+        'mejoresPartidas' => $mejoresPartidas,
+        'intentosObtenidos' => $intentosObtenidos, 
+        'idPartida'=> $idPartida,
+        'usuarioId' => $idUsuario,
+        'dificultadNombre' => $partida->dificultad,
+        'nro_cartas' => $cantidadCartas,
+        'tipo_cartas' => $partida->tipo_cartas,
+        'tiempo_restante' => $partida->tiempo_restante,
+        'tiempo_total' => $partida->tiempo_total,
+        'cartas' => json_decode($partida->estado_cartas, true), // verificar no funciona, debe ser el json decode
+        'intentos' => $partida->intentos,
+        'aciertos' => $partida->aciertos,
+        'esPartidaGuardada' => true,  // Bandera para saber si es una partida guardada
+    ]);
+}
+
+public function buscarRanking($usuarioId){
+
+    $partidaModel = new Partida(); // Creo instancia del modelo
+    return $partidaModel->mejoresPartidas($usuarioId); // llamo instancia
 }
 
 
@@ -137,12 +186,10 @@ class GameController extends Controller
 
 
 
-
-
-    /* Funcion para devolver la consulta del ranking  */
- /*    public function obtenerRanking()
-    {
-        $userId = Auth::id();
+/* Funcion para devolver la consulta del ranking  */
+/*    public function obtenerRanking()
+{
+    $userId = Auth::id();
 
         $ranking = Partida::where('user_id', $userId)
             ->orderBy('tiempo', 'asc')

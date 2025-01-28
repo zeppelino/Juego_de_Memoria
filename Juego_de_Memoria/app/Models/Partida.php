@@ -28,12 +28,27 @@ class Partida extends Model
         return $this->belongsTo(User::class);
     }
 
-    /* funcion para buscar las mejores partidas se utiliza en el ranking  */
-    public static function mejoresPartidas($userId)
+    /* funcion para buscar las mejores partidas */
+    /* public static function mejoresPartidas($userId)
     {
         return self::where('user_id', $userId)
             ->orderBy('tiempo_restante', 'asc') 
             ->take(5)
             ->get(); 
+    } */
+    public static function mejoresPartidas($userId)
+    {
+        /* return self::where('user_id', $userId)
+            ->whereIn('resultado', ['ganada', 'perdida']) 
+            ->orderBy('tiempo_restante', 'asc')
+            ->take(5)
+            ->get();
+ */
+            return self::where('user_id', $userId)
+    ->whereIn('resultado', ['ganada'])
+    /* ->where('tiempo_restante', '!=', '00:00:00') */ // Filtrar partidas con tiempo válido
+    ->orderBy('tiempo_restante', 'desc')
+    ->take(5)
+    ->get();
     }
 }
