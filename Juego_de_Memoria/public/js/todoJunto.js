@@ -319,66 +319,46 @@ function guardarPartida(resultado, estado) {
     };
 
     // ver si se envia bien el json , recordar ver el controlador si recibe bien los datos
-    console.log(JSON.stringify(datosPartida));
+    /* console.log(JSON.stringify(datosPartida)); */
     
     /* let ruta = document.getElementById('rutaId').value; */
     /* axios.post(ruta, datosPartida, { */
     let tablero = document.getElementById('tableroContinuar');
 
     const esPartidaGuardada = tablero?  tablero.dataset.esPartidaGuardada === "true" : "false";
+    let ruta = '';
 
-    console.log(esPartidaGuardada);
-    
+
     if(esPartidaGuardada === true){
-        axios
-        .post("../interrumpir", datosPartida, {
-            headers: {
-                "X-CSRF-TOKEN": document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content"),
-            },
-        })
-        .then((response) => {
-            Swal.fire(
-                "Guardado",
-                "Tu partida ha sido guardada exitosamente.",
-                "success"
-            ).then(() => (window.location.href = "../dashboard"));
-        })
-        .catch((error) => {
-            console.error("Error al guardar la partida:", error);
-            Swal.fire(
-                "Error",
-                "Hubo un problema al conectar con el servidor.",
-                "error"
-            );
-        });
-
+       ruta = '../interrumpir';
     }else{
-        axios
-        .post("../guardarPartida", datosPartida, {
-            headers: {
-                "X-CSRF-TOKEN": document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content"),
-            },
-        })
-        .then((response) => {
-            Swal.fire(
-                "Guardado",
-                "Tu partida ha sido guardada exitosamente.",
-                "success"
-            ).then(() => (window.location.href = "../dashboard"));
-        })
-        .catch((error) => {
-            console.error("Error al guardar la partida:", error);
-            Swal.fire(
-                "Error",
-                "Hubo un problema al conectar con el servidor.",
-                "error"
-            );
-        });
+        ruta = '../guardarPartida';
     }
+
+    axios
+    /* .post("../guardarPartida", datosPartida, { */
+    .post(ruta, datosPartida, {
+        headers: {
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        },
+    })
+    .then((response) => {
+        Swal.fire(
+            "Guardado",
+            "Tu partida ha sido guardada exitosamente.",
+            "success"
+        ).then(() => (window.location.href = "../dashboard"));
+    })
+    .catch((error) => {
+        console.error("Error al guardar la partida:", error);
+        Swal.fire(
+            "Error",
+            "Hubo un problema al conectar con el servidor.",
+            "error"
+        );
+    });
     
 }
 
@@ -439,10 +419,10 @@ function cargarPartida() {
 
     // Limpiar el tablero
     tablero.innerHTML = "";
-
+/* 
     console.log(cartas);
     console.log(tablero1);
-
+ */
     const baseUrl2 = "../images";
 
     cartas.forEach((carta, index) => {
