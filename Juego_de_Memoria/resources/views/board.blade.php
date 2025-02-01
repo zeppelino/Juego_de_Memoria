@@ -125,15 +125,6 @@
                             </div>
                         </div>
 
-                        {{-- campos ocultos --}}
-
-                        {{-- <input type="hidden" name="nroPart" id="nroPartidaId" value="{{ $idPartida }}">
-                          <input type="hidden" name="dificultad" id="dificultad" value="{{ $dificultad->nombre }}">
-                          <input type="hidden" name="nroCartas" id="nroCartasId" value="{{ $dificultad->numero_de_cartas }}">
-                          <input type="hidden" name="intentosObtenidos" id="intentosObtenidosId" value="{{ $dificultad->intentos }}">
-                          <input type="hidden" name="tipo_cartas_name" id="tipo_cartas" value="{{ $tipo_cartas }}">
-                          <input type="hidden" name="tiempoSeleccionado" id="tiempoSeleccionadoId" value="{{ $tiempo }}">
-                          <input type="text" name="idUser" id="idUser" value="{{ $usuarioId }}" hidden> --}}
 
                         <input type="hidden" name="nroPart" id="nroPartidaId"
                             value="{{ isset($idPartida) ? $idPartida : '' }}">
@@ -188,17 +179,6 @@
                 </div>
 
 
-                {{--  PONER FORMULARIO PARA CAPTAR LOS DATOS SI SE RINDE  --}}
-                {{--  <form action="{{ route('partida.rendirse') }}" method="POST" id="formRendirse">
-            @csrf
-            <input type="hidden" name="partida" value="{{ $partida }}">
-            <input type="hidden" name="aciertos" value="0">
-            <input type="hidden" name="intentos" value="0">
-            <input type="hidden" name="tiempo" value="0">
-
-          </form> --}}
-
-
             </div>
         </div>
     </div>
@@ -206,10 +186,6 @@
     </div>
     </div>
 
-    <!-- Scripts -->
-    {{-- <script src="{{ asset('js/ranking.js') }}"></script> --}}
-    {{--  <script src="{{ asset('js/tablero.js') }}" defer></script>
-    <script src="{{ asset('js/tiempo.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="{{ asset('js/todoJunto.js') }}"></script>

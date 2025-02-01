@@ -16,6 +16,7 @@ class DashboardController extends Controller
         ->where('estadoPartida', 'activa')
         ->orderBy('created_at', 'desc')
         ->get();
+
         
         return view('dashboard', compact('ultimaPartida', 'partidasActivas'));
     }

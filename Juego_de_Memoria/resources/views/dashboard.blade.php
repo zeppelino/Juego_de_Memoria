@@ -47,10 +47,10 @@
                                 <td>{{ ucfirst($partida->tipo_cartas) }}</td>
                                 <td>{{ $partida->intentos }}</td>
                                 <td>{{ $partida->aciertos }}</td>
-                                <td>{{ $partida->tiempo_restante }}</td>
+                                <td>{{ $partida->tiempo_restante === '00:00:00' ? 'Ilimitado' : $partida->tiempo_restante }}</td>
                                 <td class="d-flex justify-content-around">
-                                    <a href="{{ route('continuarPartida', $partida->id) }}" class="btn btn-info btn-sm">▶ Continuar</a>
-                                    <a href="{{ route('finalizar', $partida->id) }}" class="btn btn-danger btn-sm">🏁 Finalizar</a>
+                                    <a href="{{ route('continuarPartida', $partida->nro_partida) }}" class="btn btn-info btn-sm">▶ Continuar</a>
+                                    <a href="{{ route('finalizar', $partida->nro_partida) }}" class="btn btn-danger btn-sm">🏁 Finalizar</a>
                                 </td>
                             </tr>
                         @endforeach

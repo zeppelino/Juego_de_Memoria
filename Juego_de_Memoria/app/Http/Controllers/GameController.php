@@ -80,8 +80,9 @@ class GameController extends Controller
     public function guardarPartida(Request $request)
     {
 
+
         $request->validate([
-            'resultado' => 'required|string',
+        'resultado' => 'required|string',
         'nro_partida' => 'required|integer',
         'dificultad' => 'required|string',
         'tipo_cartas' => 'required|string',
@@ -93,7 +94,6 @@ class GameController extends Controller
         'estado' =>'required|string'
     ]);
     
-    /* $estadoCartas = json_decode($request->estado_cartas, true); // usarlo cuando cargue la partida vieja*/
     
     try {
         Partida::create([
@@ -116,6 +116,7 @@ class GameController extends Controller
     }
 }
 
+/* FUNCION PARA TERMINAR PARTIDA */
 public function finalizar($idPartida){
     
     //buscar el id de usuario
@@ -151,12 +152,14 @@ public function continuarPartida($idPartida)
     $partida = Partida::where('nro_partida', $idPartida)
         ->where('user_id', $idUsuario)
         ->firstOrFail();
-    
+
         $dificultad = Dificultad::where('nombre', $partida->dificultad)->first();
         $intentosObtenidos = $dificultad->intentos;
 
     $mejoresPartidas = $this->buscarRanking($idUsuario);
     $cantidadCartas = $dificultad->numero_de_cartas;
+
+    $tiempoTotal = $partida->tiempo_total === '00:00:00' ? 'ilimitado' : $partida->tiempo_total;
 
     return view('board', [
         'mejoresPartidas' => $mejoresPartidas,
@@ -167,7 +170,7 @@ public function continuarPartida($idPartida)
         'nro_cartas' => $cantidadCartas,
         'tipo_cartas' => $partida->tipo_cartas,
         'tiempo_restante' => $partida->tiempo_restante,
-        'tiempo_total' => $partida->tiempo_total,
+        'tiempo_total' => $tiempoTotal /* $partida->tiempo_total */,
         'cartas' => json_decode($partida->estado_cartas, true), // verificar no funciona, debe ser el json decode
         'intentos' => $partida->intentos,
         'aciertos' => $partida->aciertos,
@@ -175,13 +178,57 @@ public function continuarPartida($idPartida)
     ]);
 }
 
+/* BUSCAR LOS RANKINGS */
 public function buscarRanking($usuarioId){
 
     $partidaModel = new Partida(); // Creo instancia del modelo
     return $partidaModel->mejoresPartidas($usuarioId); // llamo instancia
 }
 
-
+/* INTERRUPCION DE LA PARTIDA DESPUES DE LA 2DA VEZ */
+public function interrumpir(Request $request){
+    $request->validate([
+        'resultado' => 'required|string',
+        'nro_partida' => 'required|integer',
+        'dificultad' => 'required|string',
+        'tipo_cartas' => 'required|string',
+        'tiempo_total' => 'required|date_format:H:i:s',
+        'intentos' => 'required|integer',
+        'aciertos' => 'required|integer',
+        'tiempo_restante' => 'required|date_format:H:i:s',
+        'estado_cartas' => 'nullable|array',
+        'estado' => 'required|string',
+    ]);
+    
+    try {
+        // Buscar la partida por nro_partida e id del usuario autenticado
+        $partida = Partida::where('nro_partida', $request->nro_partida)
+            ->where('user_id', Auth::id())
+            ->first();
+    
+        if (!$partida) {
+            // Si la partida no existe, retornar un error
+            return response()->json(['error' => 'Partida no encontrada'], 404);
+        }
+    
+        // Actualizar los datos de la partida
+        $partida->update([
+            'resultado' => $request->resultado,
+            'dificultad' => $request->dificultad,
+            'tipo_cartas' => $request->tipo_cartas,
+            'tiempo_total' => $request->tiempo_total,
+            'intentos' => $request->intentos,
+            'aciertos' => $request->aciertos,
+            'tiempo_restante' => $request->tiempo_restante,
+            'estado_cartas' => json_encode($request->estado_cartas),
+            'estadoPartida' => $request->estado,
+        ]);
+    
+        return response()->json(['success' => true, 'message' => 'Partida actualizada correctamente']);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Error al actualizar la partida: ' . $e->getMessage()], 500);
+    }
+}
 
 
 

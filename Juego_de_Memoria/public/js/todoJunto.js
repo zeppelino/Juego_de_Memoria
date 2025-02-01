@@ -11,7 +11,13 @@ let intervaloTiempo;
 
 // Escuchadores para los botones rendirse e interrumpir
 document.getElementById("btnRendirse").addEventListener("click", function() {
-    guardarPartida("abandonada", "finalizada");
+    Swal.fire({
+        title: "Estas Abandonando la partida",
+        text: "Perderas tu partida",
+        icon: "error",
+        confirmButtonText: "Continuar",
+    }).then(() => guardarPartida("abandonada", "finalizada"));
+    /* guardarPartida("abandonada", "finalizada"); */
 });
 
 document.getElementById("btnInterrumpir").addEventListener("click", function() {
@@ -265,7 +271,7 @@ function finalizarPartida(mensaje, totalParejas) {
     }).then(() => guardarPartida(resultado, estado));
 }
 
-// Guardar la partida
+////////////// GUARDAR LA PARTIDA ///////////////////
 
 // con AXIOS
 function guardarPartida(resultado, estado) {
@@ -290,7 +296,6 @@ function guardarPartida(resultado, estado) {
             tiempoRestanteFormateado = formatearTiempo(tiempoRestante);
         }
     
-
         
     /* if(document.getElementById("tiempoSeleccionadoId").value === "ilimitado"){
         tiempoTotalFormateado = formatearTiempo(0);
@@ -318,7 +323,39 @@ function guardarPartida(resultado, estado) {
     
     /* let ruta = document.getElementById('rutaId').value; */
     /* axios.post(ruta, datosPartida, { */
-    axios
+    let tablero = document.getElementById('tableroContinuar');
+
+    const esPartidaGuardada = tablero?  tablero.dataset.esPartidaGuardada === "true" : "false";
+
+    console.log(esPartidaGuardada);
+    
+    if(esPartidaGuardada === true){
+        axios
+        .post("../interrumpir", datosPartida, {
+            headers: {
+                "X-CSRF-TOKEN": document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
+            },
+        })
+        .then((response) => {
+            Swal.fire(
+                "Guardado",
+                "Tu partida ha sido guardada exitosamente.",
+                "success"
+            ).then(() => (window.location.href = "../dashboard"));
+        })
+        .catch((error) => {
+            console.error("Error al guardar la partida:", error);
+            Swal.fire(
+                "Error",
+                "Hubo un problema al conectar con el servidor.",
+                "error"
+            );
+        });
+
+    }else{
+        axios
         .post("../guardarPartida", datosPartida, {
             headers: {
                 "X-CSRF-TOKEN": document
@@ -341,6 +378,8 @@ function guardarPartida(resultado, estado) {
                 "error"
             );
         });
+    }
+    
 }
 
 /* FUNCIONES PARA FORMATEAR TIEMPOS */
