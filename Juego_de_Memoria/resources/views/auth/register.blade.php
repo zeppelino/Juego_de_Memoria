@@ -17,9 +17,17 @@
 
                         <!-- Nombre de Usuario -->
                         <div class="mb-3">
-                            <label for="username" class="form-label text-dark">Nombre de Usuario</label>
+                            <label for="username" class="form-label text-dark">Nombre de Usuario
+                            </label>
+
+                            <div class="tooltip-container">
+                                <i class="icon">i</i> <!-- Ícono -->
+                                <span class="tooltip-message">El usuario puede tener caracteres alfanúmericos incluyendo caracteres especiales.</span>
+                            </div>
+
                             <input type="text" id="username" name="username" value="{{ old('username') }}" required autofocus autocomplete="username" 
                                    class="form-control @error('username') is-invalid @enderror">
+                                   
                             @error('username')
                                 <div class="invalid-feedback" role="alert">
                                     {{ $message }}
@@ -41,7 +49,12 @@
 
                         <!-- Contraseña -->
                         <div class="mb-3">
-                            <label for="password" class="form-label text-dark">Contraseña</label>
+                            <label for="password" class="form-label text-dark">Contraseña
+                            </label>
+                            <div class="tooltip-container">
+                                <i class="icon">i</i> <!-- Ícono -->
+                                <span class="tooltip-message">La contraseña deberá tener: un caracter especial, una mayuscula, una minuscula, un número y un mínimo de 8 caracteres.</span>
+                            </div>
                             <input type="password" id="password" name="password" required 
                                    class="form-control @error('password') is-invalid @enderror">
                             @error('password')
@@ -88,5 +101,7 @@
         </div>
     </div>
 </div>
+
+
 <script src="{{ asset('assets/libs/jquery/jquery.min.js')}}"></script>
 @endsection

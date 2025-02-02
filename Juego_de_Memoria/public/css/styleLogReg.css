@@ -84,3 +84,56 @@
 .wrapper-page .auth-logo.logo-dark {
   display: block;
 }
+
+/* Estilos para la información del registro */
+.tooltip-container {
+    position: relative; /* Contenedor relativo para el posicionamiento del tooltip */
+    display: inline-block;
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+}
+
+.icon {
+    display: inline-block;
+    font-size: 16px; /* Tamaño del ícono */
+    background-color: #6b8198; /* Color de fondo del ícono */
+    color: white; /* Color del texto del ícono */
+    padding: 5px;
+    border-radius: 50%; /* Forma circular */
+    text-align: center;
+    width: 24px;
+    height: 24px;
+    line-height: 24px; /* Centrar texto verticalmente */
+}
+
+.tooltip-message {
+    visibility: hidden; /* Oculta el mensaje inicialmente */
+    opacity: 0; /* Totalmente transparente */
+    width: 250px; /* Ancho del mensaje */
+    background-color: #333; /* Fondo oscuro */
+    color: #fff; /* Texto blanco */
+    text-align: center;
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 5px;
+    position: absolute;
+    z-index: 1; /* Coloca el mensaje por encima de otros elementos */
+    bottom: 150%; /* Posición sobre el ícono */
+    left: 50%; /* Centrado horizontal */
+    transform: translateX(-50%);
+    transition: opacity 0.3s; /* Animación de aparición */
+}
+
+.tooltip-message::after {
+    content: ""; /* Triángulo del tooltip */
+    position: absolute;
+    top: 100%; /* Debajo del tooltip */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent; /* Color del triángulo */
+}
+
+.tooltip-container:hover .tooltip-message {
+    visibility: visible; /* Muestra el mensaje */
+    opacity: 1; /* Totalmente visible */
+}

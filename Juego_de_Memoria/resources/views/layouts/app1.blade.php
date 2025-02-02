@@ -14,6 +14,8 @@
     <!-- Estilo para borde rojo en input password, evita que se corte por visualizador de password-->
    <link rel="stylesheet" href="{{ asset('css/styleLogin.css') }}">
 
+   
+
 </head>
 
 <body>
