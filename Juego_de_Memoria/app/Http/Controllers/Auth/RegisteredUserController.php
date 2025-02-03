@@ -53,6 +53,8 @@ class RegisteredUserController extends Controller
             'password.numbers' => 'La contraseña debe incluir al menos un número.',
             'password.symbols' => 'La contraseña debe incluir al menos un símbolo.',
             'date_of_birth.required' => 'La fecha de nacimiento es obligatoria.',
+            'password.confirmed' => 'La constraseña no coincide.',
+
         ]);
 
         $user = User::create([
