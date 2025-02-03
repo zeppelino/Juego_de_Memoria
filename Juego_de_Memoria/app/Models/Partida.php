@@ -34,6 +34,7 @@ class Partida extends Model
 
         return self::where('user_id', $userId)
             ->whereIn('resultado', ['ganada'])
+            ->where('tiempo_total', '!=', '00:00:00')
             ->get()
             ->map(function ($partida) {
                 // Convertir tiempos a formato de segundos para la resta
