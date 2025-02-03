@@ -36,6 +36,7 @@
   flex: 0 1 calc(12.5% - 1px); /* Para 8 cartas por fila restando el gap */
   box-sizing: border-box; /* Asegura que el tamaño incluye el borde */
   border-radius: 5px;
+  user-select: none;
 }
 
 /* Descomentar */

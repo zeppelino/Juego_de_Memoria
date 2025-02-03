@@ -14,7 +14,7 @@
             <div class="col-md-4 p-2 responsivo">
                 <div class="card h-100 shadow-lg">
                     <div class="card-header bg-warning text-dark">
-                        <h4>🏆 Ranking Personal</h4>
+                        <h4>🏆 Ranking Personal - Los mejores 5 tiempos</h4>
                     </div>
                     <div class="card-body">
                         <table class="table table-striped" id="rankingTable">
@@ -65,9 +65,10 @@
                                               @case('00:20:00')
                                                   {{'20 min'}}
                                                   @break
+                                              @case('00:00:00')
+                                                  {{'S/T'}}
+                                                  @break
   
-                                              @default
-                                                {{ $partida->tiempo_total }}
                                                 @endswitch
                                         
                                             </td>
@@ -137,7 +138,7 @@
                                 <p><strong>🎯 Aciertos:</strong> <span id="aciertos">0</span></p>
                             </div>
                             <div class="col-md-3">
-                                <p><strong>🔄 Intentos obtenidos:</strong> <span id="intentos">
+                                <p><strong>🔄 Intentos máximos:</strong> <span id="intentos">
                                         {{ isset($intentosObtenidos) ? $intentosObtenidos : $dificultad->intentos }}
                                         {{--  {{ $dificultad->intentos }} --}}
                                     </span></p>

@@ -12,12 +12,22 @@ let intervaloTiempo;
 // Escuchadores para los botones rendirse e interrumpir
 document.getElementById("btnRendirse").addEventListener("click", function() {
     Swal.fire({
-        title: "Estas Abandonando la partida",
+        title: "¿Desea finalizar la partida?",
         text: "Perderas tu partida",
         icon: "error",
-        confirmButtonText: "Continuar",
-    }).then(() => guardarPartida("abandonada", "finalizada"));
-    /* guardarPartida("abandonada", "finalizada"); */
+        showDenyButton: true,
+        allowOutsideClick: false,
+        showCloseButton: true,
+        denyButtonText: `Continuar`,
+        confirmButtonText: "Finalizar",
+    })/* .then(() => guardarPartida("abandonada", "finalizada")); */
+    .then((result) => {
+        if (result.isConfirmed) {
+             guardarPartida("abandonada", "finalizada");
+        } else if (result.isDenied) {
+
+        }
+});
 });
 
 document.getElementById("btnInterrumpir").addEventListener("click", function() {
@@ -212,6 +222,7 @@ function verificarFinDelJuego() {
                 title: "🎉 ¡¡EXCELENTE MEMORIA!!",
                 text: "Has encontrado todas las parejas. ¡Felicitaciones!",
                 icon: "success",
+                allowOutsideClick: false,
                 confirmButtonText: "Continuar",
             }).then(() => guardarPartida(resultado, estado));
         }, 500);
@@ -267,6 +278,7 @@ function finalizarPartida(mensaje, totalParejas) {
         title: "Partida finalizada",
         text: mensaje + "\n" + mensaje2,
         icon: icono,
+        allowOutsideClick: false,
         confirmButtonText: "Continuar",
     }).then(() => guardarPartida(resultado, estado));
 }
@@ -346,9 +358,13 @@ function guardarPartida(resultado, estado) {
     })
     .then((response) => {
         Swal.fire(
-            "Guardado",
-            "Tu partida ha sido guardada exitosamente.",
-            "success"
+            {
+                title: "Guardado",
+                text: "Tu partida ha sido guardada exitosamente.",
+                icon: 'success',
+                allowOutsideClick: false, 
+                confirmButtonText: "Continuar",  
+            }
         ).then(() => (window.location.href = "../dashboard"));
     })
     .catch((error) => {
