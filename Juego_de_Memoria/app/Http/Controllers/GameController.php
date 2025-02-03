@@ -18,8 +18,7 @@ class GameController extends Controller
 
 
     /* Esta funcion es llamada por el dashboard al dar iniciar juego para cargar los selectores */
-    public function index()
-    {
+    public function index(){
         $dificultades = Dificultad::all();
         $tiposCartas = TipoCarta::all();
         $tiempos = Tiempo::all();
@@ -77,8 +76,7 @@ class GameController extends Controller
     
     /* FUNCION PARA GUARDAR LA PARTIDA */
     
-    public function guardarPartida(Request $request)
-    {
+    public function guardarPartida(Request $request){
 
 
         $request->validate([
@@ -93,8 +91,7 @@ class GameController extends Controller
         'estado_cartas' => 'nullable|array',
         'estado' =>'required|string'
     ]);
-    
-    
+
     try {
         Partida::create([
             'user_id' => Auth::id(),
@@ -114,16 +111,17 @@ class GameController extends Controller
     } catch (\Exception $e) {
         return response()->json(['error' => 'Error al guardar la partida.'.$e], 500);
     }
+
 }
 
 /* FUNCION PARA TERMINAR PARTIDA */
-public function finalizar($idPartida){
+public function finalizar($nro_partida){
     
     //buscar el id de usuario
     $usuarioId = Auth::id();
     
     // buscar con el id de la partida y el id del usuario
-    $partida = Partida::where('nro_partida', $idPartida)
+    $partida = Partida::where('nro_partida', $nro_partida)
     ->where('user_id', $usuarioId)
     ->first();
     
@@ -144,8 +142,7 @@ public function finalizar($idPartida){
 
 /* FUNCION PARA CONTINUAR CON LA PARTIDA */
 
-public function continuarPartida($idPartida)
-{
+public function continuarPartida($idPartida){
 
     $idUsuario = Auth::id();
 
@@ -161,6 +158,7 @@ public function continuarPartida($idPartida)
 
     $tiempoTotal = $partida->tiempo_total === '00:00:00' ? 'ilimitado' : $partida->tiempo_total;
 
+
     return view('board', [
         'mejoresPartidas' => $mejoresPartidas,
         'intentosObtenidos' => $intentosObtenidos, 
@@ -171,7 +169,7 @@ public function continuarPartida($idPartida)
         'tipo_cartas' => $partida->tipo_cartas,
         'tiempo_restante' => $partida->tiempo_restante,
         'tiempo_total' => $tiempoTotal /* $partida->tiempo_total */,
-        'cartas' => json_decode($partida->estado_cartas, true), // verificar no funciona, debe ser el json decode
+        'cartas' => json_decode($partida->estado_cartas, true), 
         'intentos' => $partida->intentos,
         'aciertos' => $partida->aciertos,
         'esPartidaGuardada' => true,  // Bandera para saber si es una partida guardada

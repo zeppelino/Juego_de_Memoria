@@ -28,27 +28,28 @@ class Partida extends Model
         return $this->belongsTo(User::class);
     }
 
-    /* funcion para buscar las mejores partidas */
-    /* public static function mejoresPartidas($userId)
-    {
-        return self::where('user_id', $userId)
-            ->orderBy('tiempo_restante', 'asc') 
-            ->take(5)
-            ->get(); 
-    } */
+
     public static function mejoresPartidas($userId)
     {
-        /* return self::where('user_id', $userId)
-            ->whereIn('resultado', ['ganada', 'perdida']) 
-            ->orderBy('tiempo_restante', 'asc')
-            ->take(5)
-            ->get();
- */
-            return self::where('user_id', $userId)
-    ->whereIn('resultado', ['ganada'])
-    /* ->where('tiempo_restante', '!=', '00:00:00') */ // Filtrar partidas con tiempo válido
-    ->orderBy('tiempo_restante', 'desc')
-    ->take(5)
-    ->get();
+
+        return self::where('user_id', $userId)
+            ->whereIn('resultado', ['ganada'])
+            ->get()
+            ->map(function ($partida) {
+                // Convertir tiempos a formato de segundos para la resta
+                $tiempoTotal = strtotime($partida->tiempo_total);
+                $tiempoRestante = strtotime($partida->tiempo_restante);
+                $diferenciaSegundos = max(0, $tiempoTotal - $tiempoRestante); // Asegurar no valores negativos
+
+                // Convertir la diferencia de nuevo a formato de tiempo (H:i:s)
+                $partida->tiempo_restante = gmdate('H:i:s', $diferenciaSegundos);
+
+                // Añadir un campo adicional con el tiempo en segundos para ordenar
+                $partida->tiempo_diferencia_segundos = $diferenciaSegundos;
+
+                return $partida;
+            })
+            ->sortBy('tiempo_diferencia_segundos') // Ordeno los mas bajos
+            ->take(5); 
     }
 }

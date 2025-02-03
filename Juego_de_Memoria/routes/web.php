@@ -23,7 +23,7 @@ Route::middleware(['auth', 'session.expired'])->group(function () {
     Route::get('/continuarPartida/{id}', [GameController::class, 'continuarPartida'])->name('continuarPartida');
     Route::post('/guardarPartida', [GameController::class, 'guardarPartida'])->name('guardarPartida');
     Route::post('/interrumpir', [GameController::class, 'interrumpir'])->name('interrumpir');
-    Route::get('/finalizar/{id}', [GameController::class, 'finalizar'])->name('finalizar');
+    Route::get('/finalizar/{partida}', [GameController::class, 'finalizar'])->name('finalizar');
 });
 
 Route::middleware('auth')->group(function () {

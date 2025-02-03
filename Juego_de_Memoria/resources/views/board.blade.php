@@ -21,10 +21,10 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Tiempo restante (min)</th>
+                                    <th>Tiempo utilizado <br>(seg)</th>
                                     <th>Intentos</th>
                                     <th>Dificultad</th>
-                                    <th>Estado</th>
+                                    <th>Tiempo <br> Seleccionado</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -53,7 +53,24 @@
                                             </td>
                                             <td>{{ $partida->intentos }}</td>
                                             <td>{{ ucfirst($partida->dificultad) }}</td>
-                                            <td>{{ ucfirst($partida->resultado) }}</td>
+                                            {{-- <td>{{ ucfirst($partida->resultado) }}</td> --}}
+                                            <td>
+                                              @switch($partida->tiempo_total)
+                                              @case('00:05:00')
+                                                  {{'5 min'}}
+                                                  @break
+                                              @case('00:10:00')
+                                                  {{'10 min'}}
+                                                  @break
+                                              @case('00:20:00')
+                                                  {{'20 min'}}
+                                                  @break
+  
+                                              @default
+                                                {{ $partida->tiempo_total }}
+                                                @endswitch
+                                        
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -92,7 +109,21 @@
                             <div class="col-md-3">
                                 <p><strong>Tiempo Máximo:</strong>
                                     @if (isset($tiempo_total))
-                                        {{ $tiempo_total }}
+                                        @switch($tiempo_total)
+                                            @case('00:05:00')
+                                                {{'5 min'}}
+                                                @break
+                                            @case('00:10:00')
+                                                {{'10 min'}}
+                                                @break
+                                            @case('00:20:00')
+                                                {{'20 min'}}
+                                                @break
+
+                                            @default
+                                              {{ $tiempo_total }}
+                                        @endswitch
+                                        
                                     @else
                                         {{ $tiempo == 'ilimitado' ? 'Sin límite' : $tiempo . ' minutos' }}
                                     @endif
